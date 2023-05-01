@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+body {
+  box-sizing: border-box;
+}
+
+.game-board {
+  --cell-width: 100px;
+
+  display: grid;
+  grid-template-columns: repeat(3, var(--cell-width));
+  grid-template-rows: repeat(3, var(--cell-width));
+}
+
+.game-board > div {
+  border: solid 1px black;
+  font-size: 56px;
+  text-align: center;
+  line-height: var(--cell-width);
+}
