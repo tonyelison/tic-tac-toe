@@ -1,9 +1,22 @@
 const gameBoard = (() => {
   let array = [];
+  const boardElement = document.querySelector('.game-board');
 
   const getArray = () => array;
 
-  const addMark = () => {
+  const addMark = (gridCell, index) => {
+    gridCell.textContent = 'X';
+    gridCell.classList.add('marked');
+    array[index] = 'X';
+  };
+
+  const render = () => {
+    for (let i = 0; i < 9; i += 1) {
+      const gridCell = document.createElement('div');
+      gridCell.id = i;
+      gridCell.addEventListener('click', () => addMark(gridCell, i));
+      boardElement.appendChild(gridCell);
+    }
   };
 
   const checkForWinner = () => {
@@ -14,7 +27,7 @@ const gameBoard = (() => {
   };
 
   return {
-    getArray, addMark, checkForWinner, reset,
+    getArray, render, checkForWinner, reset,
   };
 })();
 
@@ -39,3 +52,5 @@ const game = ((board) => {
 
   return { play };
 })(gameBoard);
+
+gameBoard.render();

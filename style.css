@@ -22,3 +22,7 @@ body {
   text-align: center;
   line-height: var(--cell-width);
 }
+
+.marked {
+  background-color: lightcyan;
+}
