@@ -1,7 +1,7 @@
 const gameBoard = (() => {
   let array = [];
 
-  const getArray = () => array;
+  const hasMarkAtIndex = (index) => !!array[index];
 
   const addMark = (gridCell, index, symbol) => {
     gridCell.textContent = symbol;
@@ -9,11 +9,15 @@ const gameBoard = (() => {
     array[index] = symbol;
   };
 
+  const checkForWinner = () => false;
+
   const reset = () => {
     array = [];
   };
 
-  return { getArray, reset, addMark };
+  return {
+    addMark, hasMarkAtIndex, checkForWinner, reset,
+  };
 })();
 
 const playerFactory = (symbol) => {
@@ -32,15 +36,11 @@ const game = ((board) => {
     activePlayer = activePlayer === player1 ? player2 : player1;
   };
 
-  const checkForWinner = () => {
-    board.getArray();
-  };
-
   const playTurn = (gridCell, markIndex) => {
-    if (!board.getArray()[markIndex]) {
+    if (!board.hasMarkAtIndex(markIndex)) {
       board.addMark(gridCell, markIndex, activePlayer.getSymbol());
       setActivePlayer();
-      checkForWinner();
+      board.checkForWinner();
     }
   };
 
