@@ -1,15 +1,39 @@
 const gameBoard = (() => {
+  const winScenarios = [
+    // horizontal
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+
+    // vertical
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+
+    // diagonal
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
   let array = [];
 
   const hasMarkAtIndex = (index) => !!array[index];
 
-  const addMark = (gridCell, index, symbol) => {
-    gridCell.textContent = symbol;
-    gridCell.classList.add('marked');
-    array[index] = symbol;
+  const checkForWinner = (player) => {
+    const checkIndexSet = (indexSet) => indexSet.every((i) => array[i] === player.getSymbol());
+    if (winScenarios.some((scenario) => checkIndexSet(scenario))) {
+      return player;
+    }
+    return false;
   };
 
-  const checkForWinner = () => false;
+  const addMark = (gridCell, index, player) => {
+    const playerSymbol = player.getSymbol();
+
+    gridCell.textContent = playerSymbol;
+    gridCell.classList.add('marked');
+    array[index] = playerSymbol;
+  };
 
   const reset = () => {
     array = [];
@@ -38,9 +62,8 @@ const game = ((board) => {
 
   const playTurn = (gridCell, markIndex) => {
     if (!board.hasMarkAtIndex(markIndex)) {
-      board.addMark(gridCell, markIndex, activePlayer.getSymbol());
+      board.addMark(gridCell, markIndex, activePlayer);
       setActivePlayer();
-      board.checkForWinner();
     }
   };
 
