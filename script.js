@@ -17,68 +17,75 @@ const gameBoard = (() => {
     [2, 4, 6],
   ];
 
-  const checkForWinner = (player) => {
-    const didWin = (indexSet) => indexSet.every((i) => boardArray[i] === player.getSymbol());
-    if (winScenarios.some((scenario) => didWin(scenario))) {
-      return player;
+  const boardElement = document.querySelector('.game-board');
+
+  const render = (gridAction) => {
+    for (let i = 0; i < 9; i += 1) {
+      const gridCell = document.createElement('div');
+      gridCell.id = i;
+      gridCell.addEventListener('click', () => gridAction(gridCell, i));
+      boardElement.appendChild(gridCell);
     }
-    return false;
   };
 
-  const addMark = (gridCell, index, player) => {
-    const playerSymbol = player.getSymbol();
+  const checkDidWin = (symbol) => {
+    const didWin = (indexSet) => indexSet.every((i) => boardArray[i] === symbol);
+    return winScenarios.some((scenario) => didWin(scenario));
+  };
 
-    gridCell.textContent = playerSymbol;
+  const addMark = (gridCell, index, symbol) => {
+    gridCell.textContent = symbol;
     gridCell.classList.add('marked');
-    boardArray[index] = playerSymbol;
+    boardArray[index] = symbol;
   };
 
   const hasMarkAtIndex = (index) => !!boardArray[index];
 
   const reset = () => {
     boardArray = [];
-  };
-
-  return {
-    addMark, hasMarkAtIndex, checkForWinner, reset,
-  };
-})();
-
-const playerFactory = (symbol) => {
-  const getSymbol = () => symbol;
-
-  return { getSymbol };
-};
-
-const game = ((board) => {
-  const player1 = playerFactory('X');
-  const player2 = playerFactory('O');
-
-  let activePlayer = player1;
-
-  const setActivePlayer = () => {
-    activePlayer = activePlayer === player1 ? player2 : player1;
-  };
-
-  const playTurn = (gridCell, markIndex) => {
-    if (!board.hasMarkAtIndex(markIndex)) {
-      board.addMark(gridCell, markIndex, activePlayer);
-      setActivePlayer();
+    for (const child of boardElement.children) {
+      child.textContent = '';
+      child.classList.remove('marked');
     }
   };
 
-  const render = () => {
-    const boardElement = document.querySelector('.game-board');
-    for (let i = 0; i < 9; i += 1) {
-      const gridCell = document.createElement('div');
-      gridCell.id = i;
-      gridCell.addEventListener('click', () => playTurn(gridCell, i));
-      boardElement.appendChild(gridCell);
+  return {
+    render, addMark, hasMarkAtIndex, checkDidWin, reset,
+  };
+})();
+
+const playerFactory = (order) => {
+  const symbols = ['X', 'O'];
+  const symbol = symbols[order - 1];
+
+  const getSymbol = () => symbol;
+  const getOrder = () => order;
+
+  return { getSymbol, getOrder };
+};
+
+const game = ((board) => {
+  const player1 = playerFactory(1);
+  const player2 = playerFactory(2);
+
+  let activePlayer = player1;
+
+  const playTurn = (gridCell, markIndex) => {
+    if (!board.hasMarkAtIndex(markIndex)) {
+      const activeSymbol = activePlayer.getSymbol();
+      board.addMark(gridCell, markIndex, activeSymbol);
+      if (board.checkDidWin(activeSymbol)) {
+        console.log(`Player ${activePlayer.getOrder()} wins!`);
+        board.reset();
+        activePlayer = player1;
+      } else {
+        activePlayer = activePlayer === player1 ? player2 : player1;
+      }
     }
   };
 
   const play = () => {
-    render();
+    board.render(playTurn);
   };
 
   return { play };
