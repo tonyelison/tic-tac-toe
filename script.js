@@ -55,8 +55,7 @@ const gameBoard = (() => {
 })();
 
 const playerFactory = (order) => {
-  const symbols = ['X', 'O'];
-  const symbol = symbols[order - 1];
+  const symbol = ['X', 'O'][order - 1];
 
   const getSymbol = () => symbol;
   const getOrder = () => order;
