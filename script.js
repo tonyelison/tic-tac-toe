@@ -59,9 +59,13 @@ const gameBoard = (() => {
 
   const reset = () => {
     boardArray = [];
+
     [...boardElement.children].forEach((child) => {
-      child.querySelector('img').src = '';
       child.classList.remove('marked');
+
+      const img = child.querySelector('img');
+      img.src = '';
+      img.classList.remove('times', 'circle');
     });
   };
 
