@@ -1,4 +1,6 @@
 const gameBoard = (() => {
+  let boardArray = [];
+
   const winScenarios = [
     // horizontal
     [0, 1, 2],
@@ -15,13 +17,9 @@ const gameBoard = (() => {
     [2, 4, 6],
   ];
 
-  let array = [];
-
-  const hasMarkAtIndex = (index) => !!array[index];
-
   const checkForWinner = (player) => {
-    const checkIndexSet = (indexSet) => indexSet.every((i) => array[i] === player.getSymbol());
-    if (winScenarios.some((scenario) => checkIndexSet(scenario))) {
+    const didWin = (indexSet) => indexSet.every((i) => boardArray[i] === player.getSymbol());
+    if (winScenarios.some((scenario) => didWin(scenario))) {
       return player;
     }
     return false;
@@ -32,11 +30,13 @@ const gameBoard = (() => {
 
     gridCell.textContent = playerSymbol;
     gridCell.classList.add('marked');
-    array[index] = playerSymbol;
+    boardArray[index] = playerSymbol;
   };
 
+  const hasMarkAtIndex = (index) => !!boardArray[index];
+
   const reset = () => {
-    array = [];
+    boardArray = [];
   };
 
   return {
