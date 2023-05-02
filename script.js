@@ -87,10 +87,13 @@ const game = ((board) => {
 
   const gameOverDiv = document.querySelector('.game-over');
 
+  const player1Input = document.querySelector('input#player-1');
+  const player2Input = document.querySelector('input#player-2');
+
   const gameOver = (winner) => {
     const message = gameOverDiv.querySelector('.message');
 
-    message.textContent = winner ? `Player ${winner.getOrder()} Wins!` : 'Draw!';
+    message.textContent = winner ? `${winner.getName()} Wins!` : 'Draw!';
     gameOverDiv.style.display = 'block';
 
     isPlaying = false;
@@ -110,18 +113,41 @@ const game = ((board) => {
     }
   };
 
-  const setPlayerNames = () => {
-    player1.setName(document.querySelector('input#player-1').value);
-    player2.setName(document.querySelector('input#player-2').value);
+  const validateField = (input) => {
+    let isValid = true;
+    if (input.value) {
+      input.classList.remove('error');
+    } else {
+      input.classList.add('error');
+      isValid = false;
+    }
+    return isValid;
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    [player1Input, player2Input].forEach((input) => {
+      isValid = validateField(input) && isValid;
+    });
+    return isValid;
   };
 
   const renderBoard = () => {
     board.render(playTurn);
 
+    player1Input.addEventListener('input', () => validateField(player1Input));
+    player2Input.addEventListener('input', () => validateField(player2Input));
+
     const playerForm = document.querySelector('.player-form');
     const playBtn = document.querySelector('button.play');
     playBtn.addEventListener('click', () => {
-      setPlayerNames();
+      if (!validateForm()) {
+        return;
+      }
+
+      player1.setName(player1Input.value);
+      player2.setName(player2Input.value);
+
       board.display();
       playerForm.style.display = 'none';
       isPlaying = true;

@@ -5,15 +5,71 @@
 }
 
 body {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+
   box-sizing: border-box;
+  /* min-height: 100vh; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-input, button {
+header,
+main,
+input,
+button
+ {
   width: auto;
+}
+
+header {
+  margin-bottom: 50px;
+}
+
+h1 {
+  font-weight: 900;
+}
+
+h2 {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+input,
+button {
+  padding: 6px 12px;
 }
 
 input {
   display: block;
+  margin-bottom: 10px;
+
+  border: none;
+  outline: 1px solid black;
+}
+
+input:focus {
+  outline-width: 2px;
+  outline-color: blue;
+}
+
+input.error {
+  outline-color: red;
+}
+
+button {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.player-form {
+  width: auto;
+  padding: 30px;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .game-board {
