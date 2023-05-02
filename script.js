@@ -37,11 +37,11 @@ const gameBoard = (() => {
   };
 
   const checkDidWin = (symbol) => {
-    if (boardArray.filter(Boolean).length === 9) {
-      return 'draw';
-    }
     const didWin = (indexSet) => indexSet.every((i) => boardArray[i] === symbol);
-    return winScenarios.some((scenario) => didWin(scenario));
+    if (winScenarios.some((scenario) => didWin(scenario))) {
+      return true;
+    }
+    return boardArray.filter(Boolean).length === 9 ? 'draw' : false;
   };
 
   const addMark = (gridCell, index, symbol) => {
