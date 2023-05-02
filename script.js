@@ -114,23 +114,18 @@ const game = ((board) => {
   };
 
   const validateField = (input) => {
-    let isValid = true;
     if (input.value) {
       input.classList.remove('error');
-    } else {
-      input.classList.add('error');
-      isValid = false;
+      return true;
     }
-    return isValid;
+    input.classList.add('error');
+    return false;
   };
 
-  const validateForm = () => {
-    let isValid = true;
-    [player1Input, player2Input].forEach((input) => {
-      isValid = validateField(input) && isValid;
-    });
-    return isValid;
-  };
+  const validateForm = () => [
+    player1Input,
+    player2Input,
+  ].reduce((a, b) => validateField(b) && a, true);
 
   const renderBoard = () => {
     board.render(playTurn);
