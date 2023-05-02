@@ -24,6 +24,10 @@ const gameBoard = (() => {
       const gridCell = document.createElement('div');
       gridCell.id = i;
       gridCell.addEventListener('click', () => cellAction(gridCell, i));
+
+      const gridImg = document.createElement('img');
+      gridCell.appendChild(gridImg);
+
       boardElement.appendChild(gridCell);
     }
   };
@@ -41,8 +45,13 @@ const gameBoard = (() => {
   };
 
   const addMark = (gridCell, index, symbol) => {
-    gridCell.textContent = symbol;
     gridCell.classList.add('marked');
+
+    const img = gridCell.querySelector('img');
+    const imgType = symbol === 'X' ? 'times' : 'circle';
+    img.src = `./assets/${imgType}.svg`;
+    img.classList.add(imgType);
+
     boardArray[index] = symbol;
   };
 
@@ -51,7 +60,7 @@ const gameBoard = (() => {
   const reset = () => {
     boardArray = [];
     [...boardElement.children].forEach((child) => {
-      child.textContent = '';
+      child.querySelector('img').src = '';
       child.classList.remove('marked');
     });
   };
@@ -102,7 +111,6 @@ const game = ((board) => {
   const playTurn = (gridCell, markIndex) => {
     if (isPlaying && !board.hasMarkAtIndex(markIndex)) {
       const activeSymbol = activePlayer.getSymbol();
-
       board.addMark(gridCell, markIndex, activeSymbol);
       const result = board.checkDidWin(activeSymbol);
       if (result) {

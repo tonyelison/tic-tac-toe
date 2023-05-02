@@ -95,11 +95,11 @@ button {
   padding: 5px;
 }
 
-.symbol.x {
+.times {
   filter: invert(9%) sepia(100%) saturate(6726%) hue-rotate(246deg) brightness(97%) contrast(138%);
 }
 
-.symbol.o {
+.circle {
   filter: invert(17%) sepia(84%) saturate(4127%) hue-rotate(125deg) brightness(94%) contrast(102%);
 }
 
