@@ -88,7 +88,22 @@ const playerFactory = (order) => {
   return { getSymbol, getName, setName };
 };
 
-const game = ((board) => {
+const validation = (() => {
+  const validateField = (input) => {
+    if (input.value) {
+      input.classList.remove('error');
+      return true;
+    }
+    input.classList.add('error');
+    return false;
+  };
+
+  const validateForm = (fields) => fields.reduce((a, b) => validateField(b) && a, true);
+
+  return { validateField, validateForm };
+})();
+
+const game = ((board, validate) => {
   const player1 = playerFactory(1);
   const player2 = playerFactory(2);
 
@@ -96,7 +111,6 @@ const game = ((board) => {
   let isPlaying = false;
 
   const gameOverDiv = document.querySelector('.game-over');
-
   const player1Input = document.querySelector('input#player-1');
   const player2Input = document.querySelector('input#player-2');
 
@@ -122,51 +136,43 @@ const game = ((board) => {
     }
   };
 
-  const validateField = (input) => {
-    if (input.value) {
-      input.classList.remove('error');
-      return true;
+  const start = () => {
+    if (!validate.validateForm([player1Input, player2Input])) {
+      return;
     }
-    input.classList.add('error');
-    return false;
+
+    player1.setName(player1Input.value);
+    player2.setName(player2Input.value);
+
+    const playerForm = document.querySelector('.player-form');
+    playerForm.style.display = 'none';
+
+    board.display();
+
+    isPlaying = true;
   };
 
-  const validateForm = () => [
-    player1Input,
-    player2Input,
-  ].reduce((a, b) => validateField(b) && a, true);
+  const reset = () => {
+    board.reset();
+    activePlayer = player1;
+    gameOverDiv.style.display = 'none';
+    isPlaying = true;
+  };
 
   const init = () => {
     board.render(playTurn);
 
-    player1Input.addEventListener('input', () => validateField(player1Input));
-    player2Input.addEventListener('input', () => validateField(player2Input));
+    player1Input.addEventListener('input', () => validate.validateField(player1Input));
+    player2Input.addEventListener('input', () => validate.validateField(player2Input));
 
-    const playerForm = document.querySelector('.player-form');
     const playBtn = document.querySelector('button.play');
-    playBtn.addEventListener('click', () => {
-      if (!validateForm()) {
-        return;
-      }
-
-      player1.setName(player1Input.value);
-      player2.setName(player2Input.value);
-
-      board.display();
-      playerForm.style.display = 'none';
-      isPlaying = true;
-    });
+    playBtn.addEventListener('click', start);
 
     const resetBtn = document.querySelector('button.reset');
-    resetBtn.addEventListener('click', () => {
-      board.reset();
-      activePlayer = player1;
-      gameOverDiv.style.display = 'none';
-      isPlaying = true;
-    });
+    resetBtn.addEventListener('click', reset);
   };
 
   return { init };
-})(gameBoard);
+})(gameBoard, validation);
 
 game.init();
