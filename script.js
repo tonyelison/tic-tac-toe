@@ -79,16 +79,13 @@ const playerFactory = (order) => {
   let name = '';
 
   const getSymbol = () => symbol;
-  const getOrder = () => order;
   const getName = () => name;
 
   const setName = (playerName) => {
     name = playerName;
   };
 
-  return {
-    getSymbol, getOrder, getName, setName,
-  };
+  return { getSymbol, getName, setName };
 };
 
 const game = ((board) => {
