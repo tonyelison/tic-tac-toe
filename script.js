@@ -43,10 +43,10 @@ const gameBoard = (() => {
 
   const reset = () => {
     boardArray = [];
-    for (const child of boardElement.children) {
+    [...boardElement.children].forEach((child) => {
       child.textContent = '';
       child.classList.remove('marked');
-    }
+    });
   };
 
   return {
