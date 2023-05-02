@@ -19,11 +19,11 @@ const gameBoard = (() => {
 
   const boardElement = document.querySelector('.game-board');
 
-  const render = (gridAction) => {
+  const render = (cellAction) => {
     for (let i = 0; i < 9; i += 1) {
       const gridCell = document.createElement('div');
       gridCell.id = i;
-      gridCell.addEventListener('click', () => gridAction(gridCell, i));
+      gridCell.addEventListener('click', () => cellAction(gridCell, i));
       boardElement.appendChild(gridCell);
     }
   };
