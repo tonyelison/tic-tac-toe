@@ -29,6 +29,9 @@ const gameBoard = (() => {
   };
 
   const checkDidWin = (symbol) => {
+    if (boardArray.filter(Boolean).length === 9) {
+      return 'draw';
+    }
     const didWin = (indexSet) => indexSet.every((i) => boardArray[i] === symbol);
     return winScenarios.some((scenario) => didWin(scenario));
   };
@@ -75,7 +78,7 @@ const game = ((board) => {
   const gameOver = (winner) => {
     const message = gameOverDiv.querySelector('.message');
 
-    message.textContent = `Player ${winner.getOrder()} Wins!`;
+    message.textContent = winner ? `Player ${winner.getOrder()} Wins!` : 'Draw!';
     gameOverDiv.style.display = 'block';
 
     gameEnded = true;
@@ -84,9 +87,11 @@ const game = ((board) => {
   const playTurn = (gridCell, markIndex) => {
     if (!gameEnded && !board.hasMarkAtIndex(markIndex)) {
       const activeSymbol = activePlayer.getSymbol();
+
       board.addMark(gridCell, markIndex, activeSymbol);
-      if (board.checkDidWin(activeSymbol)) {
-        gameOver(activePlayer);
+      const result = board.checkDidWin(activeSymbol);
+      if (result) {
+        gameOver(result === 'draw' ? null : activePlayer);
       } else {
         activePlayer = activePlayer === player1 ? player2 : player1;
       }
