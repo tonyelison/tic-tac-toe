@@ -80,8 +80,27 @@ button {
   flex-direction: column;
 }
 
+.player-form input {
+  padding-left: 30px;
+}
+
 .form-control {
   margin-bottom: 10px;
+}
+
+.symbol {
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  padding: 5px;
+}
+
+.symbol.x {
+  filter: invert(9%) sepia(100%) saturate(6726%) hue-rotate(246deg) brightness(97%) contrast(138%);
+}
+
+.symbol.o {
+  filter: invert(17%) sepia(84%) saturate(4127%) hue-rotate(125deg) brightness(94%) contrast(102%);
 }
 
 .game-board {
