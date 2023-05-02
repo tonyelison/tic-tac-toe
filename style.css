@@ -8,10 +8,18 @@ body {
   box-sizing: border-box;
 }
 
+input, button {
+  width: auto;
+}
+
+input {
+  display: block;
+}
+
 .game-board {
   --cell-width: 100px;
 
-  display: grid;
+  display: none;
   grid-template-columns: repeat(3, var(--cell-width));
   grid-template-rows: repeat(3, var(--cell-width));
 }
@@ -30,8 +38,4 @@ body {
 
 .game-over {
   display: none;
-}
-
-button {
-  width: auto;
 }

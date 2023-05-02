@@ -28,6 +28,10 @@ const gameBoard = (() => {
     }
   };
 
+  const display = () => {
+    boardElement.style.display = 'grid';
+  };
+
   const checkDidWin = (symbol) => {
     if (boardArray.filter(Boolean).length === 9) {
       return 'draw';
@@ -53,17 +57,25 @@ const gameBoard = (() => {
   };
 
   return {
-    render, addMark, hasMarkAtIndex, checkDidWin, reset,
+    render, display, addMark, hasMarkAtIndex, checkDidWin, reset,
   };
 })();
 
 const playerFactory = (order) => {
   const symbol = ['X', 'O'][order - 1];
+  let name = '';
 
   const getSymbol = () => symbol;
   const getOrder = () => order;
+  const getName = () => name;
 
-  return { getSymbol, getOrder };
+  const setName = (playerName) => {
+    name = playerName;
+  };
+
+  return {
+    getSymbol, getOrder, getName, setName,
+  };
 };
 
 const game = ((board) => {
@@ -71,7 +83,7 @@ const game = ((board) => {
   const player2 = playerFactory(2);
 
   let activePlayer = player1;
-  let gameEnded = false;
+  let isPlaying = false;
 
   const gameOverDiv = document.querySelector('.game-over');
 
@@ -81,11 +93,11 @@ const game = ((board) => {
     message.textContent = winner ? `Player ${winner.getOrder()} Wins!` : 'Draw!';
     gameOverDiv.style.display = 'block';
 
-    gameEnded = true;
+    isPlaying = false;
   };
 
   const playTurn = (gridCell, markIndex) => {
-    if (!gameEnded && !board.hasMarkAtIndex(markIndex)) {
+    if (isPlaying && !board.hasMarkAtIndex(markIndex)) {
       const activeSymbol = activePlayer.getSymbol();
 
       board.addMark(gridCell, markIndex, activeSymbol);
@@ -98,15 +110,29 @@ const game = ((board) => {
     }
   };
 
+  const setPlayerNames = () => {
+    player1.setName(document.querySelector('input#player-1').value);
+    player2.setName(document.querySelector('input#player-2').value);
+  };
+
   const renderBoard = () => {
     board.render(playTurn);
+
+    const playerForm = document.querySelector('.player-form');
+    const playBtn = document.querySelector('button.play');
+    playBtn.addEventListener('click', () => {
+      setPlayerNames();
+      board.display();
+      playerForm.style.display = 'none';
+      isPlaying = true;
+    });
 
     const resetBtn = document.querySelector('button.reset');
     resetBtn.addEventListener('click', () => {
       board.reset();
       activePlayer = player1;
       gameOverDiv.style.display = 'none';
-      gameEnded = false;
+      isPlaying = true;
     });
   };
 
