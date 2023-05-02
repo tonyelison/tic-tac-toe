@@ -27,3 +27,11 @@ body {
 .marked {
   background-color: lightcyan;
 }
+
+.game-over {
+  display: none;
+}
+
+button {
+  width: auto;
+}

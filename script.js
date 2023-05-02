@@ -68,26 +68,44 @@ const game = ((board) => {
   const player2 = playerFactory(2);
 
   let activePlayer = player1;
+  let gameEnded = false;
+
+  const gameOverDiv = document.querySelector('.game-over');
+
+  const gameOver = (winner) => {
+    const message = gameOverDiv.querySelector('.message');
+
+    message.textContent = `Player ${winner.getOrder()} Wins!`;
+    gameOverDiv.style.display = 'block';
+
+    gameEnded = true;
+  };
 
   const playTurn = (gridCell, markIndex) => {
-    if (!board.hasMarkAtIndex(markIndex)) {
+    if (!gameEnded && !board.hasMarkAtIndex(markIndex)) {
       const activeSymbol = activePlayer.getSymbol();
       board.addMark(gridCell, markIndex, activeSymbol);
       if (board.checkDidWin(activeSymbol)) {
-        console.log(`Player ${activePlayer.getOrder()} wins!`);
-        board.reset();
-        activePlayer = player1;
+        gameOver(activePlayer);
       } else {
         activePlayer = activePlayer === player1 ? player2 : player1;
       }
     }
   };
 
-  const play = () => {
+  const renderBoard = () => {
     board.render(playTurn);
+
+    const resetBtn = document.querySelector('button.reset');
+    resetBtn.addEventListener('click', () => {
+      board.reset();
+      activePlayer = player1;
+      gameOverDiv.style.display = 'none';
+      gameEnded = false;
+    });
   };
 
-  return { play };
+  return { renderBoard };
 })(gameBoard);
 
-game.play();
+game.renderBoard();
