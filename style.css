@@ -17,9 +17,7 @@ body {
 }
 
 header,
-main,
-input,
-button
+main
  {
   width: auto;
 }
@@ -39,13 +37,16 @@ h2 {
 
 input,
 button {
+  width: 100%;
+  width: -moz-available;
+  width: -webkit-fill-available;
+  width: fill-available;
+
   padding: 6px 12px;
 }
 
 input {
   display: block;
-  margin-bottom: 10px;
-
   border: none;
   outline: 1px solid black;
 }
@@ -59,6 +60,13 @@ input.error {
   outline-color: red;
 }
 
+input.error + .validation-msg::after {
+  content: "Please Enter Player Name";
+  font-size: 12px;
+  color: red;
+  position: relative;
+}
+
 button {
   font-size: 18px;
   font-weight: bold;
@@ -70,6 +78,10 @@ button {
 
   display: flex;
   flex-direction: column;
+}
+
+.form-control {
+  margin-bottom: 10px;
 }
 
 .game-board {

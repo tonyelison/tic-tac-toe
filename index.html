@@ -19,8 +19,17 @@
   <main>
     <form class="player-form">
       <h2>Enter Player Names</h2>
-      <input id="player-1" type="text" placeholder="Player One" required>
-      <input id="player-2" type="text" placeholder="Player Two" required>
+
+      <div class="form-control">
+        <input id="player-1" type="text" placeholder="Player One" required>
+        <span class="validation-msg"></span>
+      </div>
+
+      <div class="form-control">
+        <input id="player-2" type="text" placeholder="Player Two" required>
+        <span class="validation-msg"></span>
+      </div>
+
       <button class="play" type="button">Play</button>
     </form>
     
