@@ -136,7 +136,7 @@ const game = ((board) => {
     player2Input,
   ].reduce((a, b) => validateField(b) && a, true);
 
-  const renderBoard = () => {
+  const init = () => {
     board.render(playTurn);
 
     player1Input.addEventListener('input', () => validateField(player1Input));
@@ -166,7 +166,7 @@ const game = ((board) => {
     });
   };
 
-  return { renderBoard };
+  return { init };
 })(gameBoard);
 
-game.renderBoard();
+game.init();
